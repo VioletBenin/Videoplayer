@@ -383,6 +383,8 @@ void xyjVideoPlayer::slider_released_play(){
 void xyjVideoPlayer::slider_pressed_play(){
 	this->_mediaPlayer->setPosition(get_media_play_positon());
 	this->_mediaPlayer->play();
+	this->_pause_button->setVisible(true);
+	this->_play_button->setVisible(false);
 }
 void xyjVideoPlayer::open_video(){
 	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"c:/",QString("MP4(*.mp4)"));
