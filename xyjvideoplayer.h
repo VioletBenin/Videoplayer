@@ -17,12 +17,17 @@
 #include<qmimedata.h>
 #include<QList >
 #include<qslider.h>
+#include<QLabel >
+#include<QTime >
+#include<qmediametadata.h>
 #include<5.5.1\QtWidgets\private\qwidgetresizehandler_p.h>
-
+#include<QDebug >
 #include"xyjButton.h"
 #include"xyjVideoWidget.h"
 #include"NoFocusDelegate.h"
 #include"xyjSlider.h"
+
+
 enum PLAYMODE{LISTCIRCLE,SINGLEREPEAT,RANDOM};
 class xyjVideoPlayer : public QWidget
 {
@@ -71,6 +76,9 @@ private:
 	QAction *_remove_cur_action;
 	QAction *_remove_all_action;
 	QMenu *_menu_on_table_blank;
+	/*********************************/
+	QLabel* _current_time_label;
+	QLabel* _total_time_label;
 	/*********************************/
 	int _select_row_index;
 	qint64 _play_position;

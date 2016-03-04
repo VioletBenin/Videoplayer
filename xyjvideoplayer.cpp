@@ -62,7 +62,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_add_video_button->setFocusPolicy(Qt::NoFocus);
 	this->_add_video_button->setFlat(true);
 	this->_add_video_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 	this->_play_button=new xyjButton(this);
 	QIcon normal_play,focus_play;
 	normal_play.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/pause_hover.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -85,7 +85,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_pause_button->setVisible(false);
 	_pause_button->setFlat(true);
 	this->_pause_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 	this->_next_button=new xyjButton(this);
 	QIcon normal_next,focus_next;
 	normal_next.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/next_hover.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -107,7 +107,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_previous_button->setFocusPolicy(Qt::NoFocus);
 	_previous_button->setFlat(true);
 	this->_previous_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 	this->_play_table_button=new xyjButton(this);
 	QIcon normal_table,focus_table;
 	normal_table.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/playlist.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -118,7 +118,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_play_table_button->setFocusPolicy(Qt::NoFocus);
 	this->_play_table_button->setFlat(true);
 	this->_play_table_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 
 	this->_close_button=new xyjButton(this);
 	QIcon normal_close,focus_close;
@@ -142,7 +142,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_min_button->setFocusPolicy(Qt::NoFocus);
 	this->_min_button->setFlat(true);
 	this->_min_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 	this->_vol_yes_button=new xyjButton(this);
 	QIcon normal_yes,focus_yes;
 	normal_yes.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/音量图标.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -175,7 +175,7 @@ void xyjVideoPlayer::init_ui(){
 		"QSlider::sub-page:horizontal{background:red;}"  
 		"QSlider::add-page:horizontal{background:black;} "
 		"QSlider::handle:horizontal{background:white;width:10px;border:#51b5fb 10px;border-radius:5px;margin:-3px 0px -3px 0px;}");
-
+/*************************************************************************************/
 	this->_repeat_button=new xyjButton(this);
 	QIcon normal_r,focus_r;
 	normal_r.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/repeat.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -211,7 +211,7 @@ void xyjVideoPlayer::init_ui(){
 	this->_random_button->setVisible(false);
 	this->_random_button->setFlat(true);
 	this->_random_button->setAttribute(Qt::WA_TranslucentBackground);
-
+/*************************************************************************************/
 	this->_full_screen_button=new xyjButton(this);
 	QIcon normal_full,focus_full;
 	normal_full.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/fullscreen_hover.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -261,16 +261,12 @@ void xyjVideoPlayer::init_ui(){
 									"QScrollBar::handle{background:black; border:2px solid transparent; border-radius:5px;}"
 									"QScrollBar::handle:hover{background:red;}"*/);
 	this->_playTable->setContextMenuPolicy(Qt::CustomContextMenu);
-	//this->_playTable->setStyleSheet("QScrollBar{background:transparent; width: 5px;}"
-	//	"QScrollBar::handle{background:lightgray; border:2px solid transparent; border-radius:5px;}"
-	//	"QScrollBar::handle:hover{background:gray;}"
-	//	"QScrollBar::sub-line{background:transparent;}"
-	//	"QScrollBar::add-line{background:transparent;}");
+
 	this->_playTable->setAcceptDrops(true);
-	this->setAcceptDrops(true);
+	
 	/*************************************************************/
 	this->_play_process_slider=new xyjSlider(Qt::Horizontal,this);
-	this->_play_process_slider->setGeometry(QRect(50,330,700,10));
+	this->_play_process_slider->setGeometry(QRect(60,330,680,10));
 	this->_play_process_slider->setStyleSheet(
 		"QSlider::groove:horizontal{border:0px;height:4px;}"  
 		"QSlider::sub-page:horizontal{background:red;}"  
@@ -278,6 +274,19 @@ void xyjVideoPlayer::init_ui(){
 		"QSlider::handle:horizontal{background:white;width:10px;border:#51b5fb 10px;border-radius:5px;margin:-3px 0px -3px 0px;}"
 		);
 	this->_play_process_slider->setEnabled(false);//初始设置为无法移动
+/*************************************************************************************/
+	this->_current_time_label=new QLabel(this);
+	this->_current_time_label->setGeometry(QRect(5,328,50,25));
+	//this->_current_time_label->setText(tr("00:00:00"));
+	this->_current_time_label->setStyleSheet("color:gray;");
+
+	this->_total_time_label=new QLabel(this);
+	this->_total_time_label->setGeometry(QRect(750,328,50,25));
+	//this->_total_time_label->setText("00:00:00");
+	this->_total_time_label->setStyleSheet("color:gray;");
+
+/*************************************************************************************/
+	this->setAcceptDrops(true);
 }
 void xyjVideoPlayer::raise_button(){
 	this->_add_video_button->raise();
@@ -361,14 +370,21 @@ void xyjVideoPlayer::init_table_menu(){
 
 /*********************************************/
 void xyjVideoPlayer::update_duration(qint64 duration){
-	this->_play_process_slider->setRange(0,duration);//进度条范围调到和进度相同
-	this->_play_process_slider->setEnabled(true);//////////
+	this->_play_process_slider->setRange(0,duration);
+	this->_play_process_slider->setEnabled(true);
 	//this->_play_process_slider->setPageStep(duration/10);
+	//总时长
+	qint64 totaltime_s=_mediaPlayer->duration()/1000;
+	QTime totaltime(totaltime_s/3600,totaltime_s/60%60,totaltime_s%60);
+	this->_total_time_label->setText(totaltime.toString(tr("hh:mm:ss")));
 }
 void xyjVideoPlayer::update_position(qint64 position){
 	if(!this->_play_process_slider->isSliderDown()){//当滑动条没被按住
 		_play_process_slider->setValue(position);
 	}
+
+	QTime currenttime(position/3600000,position/60000%60,position/1000%60);
+	this->_current_time_label->setText(currenttime.toString(tr("hh:mm:ss")));
 }
 void xyjVideoPlayer::set_media_play_position(int pos){
 	this->_play_position=pos;
@@ -387,7 +403,7 @@ void xyjVideoPlayer::slider_pressed_play(){
 	this->_mediaPlayer->play();
 }
 void xyjVideoPlayer::open_video(){
-	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"c:/",QString("MP4(*.mp4)"));
+	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"f:/",QString("MP4(*.mp3)"));
 	this->add_list(fileList);
 }
 void xyjVideoPlayer::play_button_clicked(){
@@ -399,12 +415,41 @@ void xyjVideoPlayer::play_button_clicked(){
 		return;
 	}
 	if(this->_playTable->selectedItems().isEmpty()){
-		play_table_double_clicked(0,0);
+		//play_table_double_clicked(0,0);
+		//改为：
+		QFile file(_fileList.at(0));
+		if(!file.open(QIODevice::ReadOnly)){
+			_playTable->item(0,1)->setText(QString::fromLocal8Bit("无效视频"));
+			return;
+		}
+		file.close();
+		_playList->setCurrentIndex(0);
+		_mediaPlayer->play();
+		this->_videoWidget->setGeometry(QRect(0,30,800,300));//视频窗口恢复原位
+		this->_playTable->setVisible(false);
+		this->_pause_button->setVisible(true);
+		this->_play_button->setVisible(false);
+
 		return;
 	}
 	this->_playList->setCurrentIndex(_playTable->selectedItems().begin().i->t()->row());
 
-	play_table_double_clicked(_playList->currentIndex(),0);
+	//play_table_double_clicked(_playList->currentIndex(),0);
+	//改为：
+	int index=_playList->currentIndex();
+	QFile file(_fileList.at(index));
+	if(!file.open(QIODevice::ReadOnly)){
+		_playTable->item(index,1)->setText(QString::fromLocal8Bit("无效视频"));
+		return;
+	}
+	file.close();
+	_playList->setCurrentIndex(index);
+	_mediaPlayer->play();
+	this->_videoWidget->setGeometry(QRect(0,30,800,300));//视频窗口恢复原位
+	this->_playTable->setVisible(false);
+	this->_pause_button->setVisible(true);
+	this->_play_button->setVisible(false);
+
 }
 void xyjVideoPlayer::vol_yes_button_clicked(){
 	this->_cur_volume=this->_mediaPlayer->volume();
@@ -463,6 +508,24 @@ void xyjVideoPlayer::play_table_double_clicked(int row,int){
 	if(!file.open(QIODevice::ReadOnly)){
 		_playTable->item(row,1)->setText(QString::fromLocal8Bit("无效视频"));
 		return;
+	}else{
+		if(_playList->currentIndex()>=0){
+			//去掉之前的播放歌曲"正在播放"提示
+			//_playTable->item(_playList->currentIndex(),1)->setText(QString::fromLocal8Bit(""));
+			//去掉播放时的背景色，恢复原本颜色
+			for(int j=0;j<_playTable->columnCount();j++){
+				if(_playList->currentIndex()%2==0){ 
+					_playTable->item(_playList->currentIndex(),j)->setBackgroundColor(QColor(120,120,120));
+				}else{
+					_playTable->item(_playList->currentIndex(),j)->setBackgroundColor(QColor(100,100,100));
+				}
+			}
+		}
+		//设置当前播放提示和颜色
+		//_playTable->item(row,1)->setText(QString::fromLocal8Bit("当前播放"));
+		for(int j=0;j<_playTable->columnCount();j++){
+			_playTable->item(row,j)->setBackgroundColor(QColor(200,200,200));
+		}
 	}
 	file.close();
 	_playList->setCurrentIndex(row);
@@ -471,6 +534,11 @@ void xyjVideoPlayer::play_table_double_clicked(int row,int){
 	this->_playTable->setVisible(false);
 	this->_pause_button->setVisible(true);
 	this->_play_button->setVisible(false);
+	//更新视频时长
+	qint64 totaltime_s=_mediaPlayer->duration();
+	//qDebug()<<totaltime_s;
+	QTime totaltime(totaltime_s/3600,totaltime_s/60%60,totaltime_s%60);
+	this->_total_time_label->setText(totaltime.toString(tr("hh:mm:ss")));
 }
 void xyjVideoPlayer::play_table_menu_requested(const QPoint& pos){
 	if(this->_playTable->itemAt(pos)!=NULL){
@@ -560,16 +628,28 @@ void xyjVideoPlayer::remove_all_video(){
 void xyjVideoPlayer::remove_current_video(){
 	if(this->_select_row_index==this->_playList->currentIndex()){//删除正在播放的歌曲,先stop
 		this->_mediaPlayer->stop();
-	}
-	this->_fileList.removeAt(this->_select_row_index);
-	this->_playList->removeMedia(this->_select_row_index);
-	this->_playTable->removeRow(this->_select_row_index);
-	this->paint_table();
-	this->save_list();
-	if(this->_select_row_index==this->_playList->currentIndex()){
+
+		this->_fileList.removeAt(this->_select_row_index);
+		this->_playList->removeMedia(this->_select_row_index);
+		this->_playTable->removeRow(this->_select_row_index);
+		
 		this->_pause_button->setVisible(false);
 		this->_play_button->setVisible(true);
+	}else if(this->_select_row_index < this->_playList->currentIndex()){
+		
+		this->_fileList.removeAt(this->_select_row_index);
+		this->_playList->removeMedia(this->_select_row_index);
+		this->_playTable->removeRow(this->_select_row_index);
+		//todo
+		
+	}else{
+		this->_fileList.removeAt(this->_select_row_index);
+		this->_playList->removeMedia(this->_select_row_index);
+		this->_playTable->removeRow(this->_select_row_index);
 	}
+
+	this->paint_table();
+	this->save_list();
 }
 void xyjVideoPlayer::save_list(){
 	QFile file(this->_xyjPath+"xyjVideoList.txt");
