@@ -379,12 +379,12 @@ qint64 xyjVideoPlayer::get_media_play_positon(){
 void xyjVideoPlayer::slider_released_play(){
 	this->_mediaPlayer->setPosition(get_media_play_positon());
 	this->_mediaPlayer->play();
+	this->_pause_button->setVisible(true);
+	this->_play_button->setVisible(false);
 }
 void xyjVideoPlayer::slider_pressed_play(){
 	this->_mediaPlayer->setPosition(get_media_play_positon());
 	this->_mediaPlayer->play();
-	this->_pause_button->setVisible(true);
-	this->_play_button->setVisible(false);
 }
 void xyjVideoPlayer::open_video(){
 	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"c:/",QString("MP4(*.mp4)"));
@@ -554,14 +554,22 @@ void xyjVideoPlayer::remove_all_video(){
 	this->_playTable->clear();
 	this->save_list();
 	this->paint_table();
+	this->_pause_button->setVisible(false);
+	this->_play_button->setVisible(true);
 }
 void xyjVideoPlayer::remove_current_video(){
-	this->_mediaPlayer->stop();
+	if(this->_select_row_index==this->_playList->currentIndex()){//删除正在播放的歌曲,先stop
+		this->_mediaPlayer->stop();
+	}
 	this->_fileList.removeAt(this->_select_row_index);
 	this->_playList->removeMedia(this->_select_row_index);
 	this->_playTable->removeRow(this->_select_row_index);
 	this->paint_table();
 	this->save_list();
+	if(this->_select_row_index==this->_playList->currentIndex()){
+		this->_pause_button->setVisible(false);
+		this->_play_button->setVisible(true);
+	}
 }
 void xyjVideoPlayer::save_list(){
 	QFile file(this->_xyjPath+"xyjVideoList.txt");
