@@ -20,6 +20,7 @@
 #include<QLabel >
 #include<QTime >
 #include<qmediametadata.h>
+#include<qdir.h>
 #include<5.5.1\QtWidgets\private\qwidgetresizehandler_p.h>
 #include<QDebug >
 #include"xyjButton.h"
@@ -59,6 +60,7 @@ private:
 	xyjButton* _previous_button;
 	xyjButton* _play_table_button;
 	xyjButton* _min_button;
+	//xyjButton* _max_button;
 	xyjButton* _close_button;
 	xyjButton* _vol_yes_button;
 	xyjButton* _vol_no_button;
@@ -73,6 +75,7 @@ private:
 	/*********************************/
 	QMenu *_menu_on_table_text;
 	QAction *_add_video_action;
+	QAction *_add_dir_action;
 	QAction *_remove_cur_action;
 	QAction *_remove_all_action;
 	QMenu *_menu_on_table_blank;
@@ -93,6 +96,7 @@ private slots:
 	void slider_released_play();
 	void slider_pressed_play();
 	void open_video();
+	void add_dir();
 	void play_button_clicked();
 	void vol_yes_button_clicked();
 	void vol_no_button_clicked();

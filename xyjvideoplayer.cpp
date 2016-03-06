@@ -7,7 +7,7 @@ xyjVideoPlayer::xyjVideoPlayer(QWidget *parent)
 	this->init_videoPlayer();
 	this->init_connections();
 	this->init_table_menu();
-	setWindowFlags(/*Qt::Window |*/Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Window |Qt::FramelessWindowHint);
 	//setWindowOpacity(0.9);
 	setAttribute(Qt::WA_TranslucentBackground,true);
 	QWidgetResizeHandler *movein=new QWidgetResizeHandler(this);
@@ -142,6 +142,17 @@ void xyjVideoPlayer::init_ui(){
 	this->_min_button->setFocusPolicy(Qt::NoFocus);
 	this->_min_button->setFlat(true);
 	this->_min_button->setAttribute(Qt::WA_TranslucentBackground);
+
+	//this->_max_button=new xyjButton(this);
+	//QIcon normal_max,focus_max;
+	//normal_max.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/maxwin.png"), QSize(), QIcon::Normal, QIcon::Off);
+	//focus_max.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/maxwin_hover.png"), QSize(), QIcon::Normal, QIcon::Off);
+	//this->_max_button->set_icons(normal_max,focus_max,focus_max);
+	//this->_max_button->setIconSize(QSize(15,15));
+	//this->_max_button->setGeometry(QRect(740,5,25,25));
+	//this->_max_button->setFocusPolicy(Qt::NoFocus);
+	//this->_max_button->setFlat(true);
+	//this->_max_button->setAttribute(Qt::WA_TranslucentBackground);
 /*************************************************************************************/
 	this->_vol_yes_button=new xyjButton(this);
 	QIcon normal_yes,focus_yes;
@@ -351,20 +362,24 @@ void xyjVideoPlayer::init_table_menu(){
 	this->_menu_on_table_blank=new QMenu(_playTable);
 
 	this->_add_video_action=new QAction(QString::fromLocal8Bit("添加视频"),this);
+	this->_add_dir_action=new QAction(QString::fromLocal8Bit("添加目录"),this);
 	this->_remove_cur_action=new QAction(QString::fromLocal8Bit("移除所选视频"),this);
 	this->_remove_all_action=new QAction(QString::fromLocal8Bit("移除所有视频"),this);
 
 	connect(_add_video_action,SIGNAL(triggered()),this,SLOT(open_video()));
+	connect(_add_dir_action,SIGNAL(triggered()),this,SLOT(add_dir()));
 	connect(_remove_cur_action,SIGNAL(triggered()),this,SLOT(remove_current_video()));
 	connect(_remove_all_action,SIGNAL(triggered()),this,SLOT(remove_all_video()));
 
 
 	this->_menu_on_table_text->addAction(_add_video_action);
+	this->_menu_on_table_text->addAction(_add_dir_action);
 	this->_menu_on_table_text->addAction(_remove_cur_action);
 	this->_menu_on_table_text->addAction(_remove_all_action);
 
 	
 	this->_menu_on_table_blank->addAction(_add_video_action);
+	this->_menu_on_table_text->addAction(_add_dir_action);
 	this->_menu_on_table_blank->addAction(_remove_all_action);
 }
 
@@ -403,8 +418,18 @@ void xyjVideoPlayer::slider_pressed_play(){
 	this->_mediaPlayer->play();
 }
 void xyjVideoPlayer::open_video(){
-	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"f:/",QString("MP4(*.mp3)"));
+	QStringList fileList = QFileDialog::getOpenFileNames(this,QString::fromLocal8Bit("add video"),"f:/",QString("MP4(*.mp4)"));
 	this->add_list(fileList);
+}
+void xyjVideoPlayer::add_dir(){
+	QString path = QFileDialog::getExistingDirectory(this,QString::fromLocal8Bit("add video dir"),"f:/");
+	QDir dir(path);
+
+	QStringList filelist;
+	foreach(QString filename,dir.entryList(QStringList()<<"*.mp3",QDir::Filter::Files)){
+		filelist<<dir.absoluteFilePath(filename);
+	}
+	this->add_list(filelist);
 }
 void xyjVideoPlayer::play_button_clicked(){
 	if(this->_playList->isEmpty()) return;
