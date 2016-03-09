@@ -12,16 +12,43 @@ xyjVideoPlayer::xyjVideoPlayer(QWidget *parent)
 	setAttribute(Qt::WA_TranslucentBackground,true);
 	QWidgetResizeHandler *movein=new QWidgetResizeHandler(this);
 	movein->setMovingEnabled(true);
-	this->setFixedSize(QSize(800,400));
+	//this->setFixedSize(QSize(800,400));
 	this->raise_button();
 
 	this->_xyjPath=QApplication::applicationDirPath();
 	this->read_list();
+
 }
 
 xyjVideoPlayer::~xyjVideoPlayer()
 {
-
+	DELETE(_mediaPlayer);
+	DELETE(_playList);
+	DELETE(_videoWidget);
+	DELETE(_menu_on_table_text);
+	DELETE(_menu_on_table_blank);
+	DELETE(_playTable);
+	DELETE(_add_video_button);
+	DELETE(_play_button);
+	DELETE(_pause_button);
+	DELETE(_next_button);
+	DELETE(_previous_button);
+	DELETE(_play_table_button);
+	DELETE(_min_button);
+	DELETE(_close_button);
+	DELETE(_vol_yes_button);
+	DELETE(_vol_no_button);
+	DELETE(_single_repeat_button);
+	DELETE(_repeat_button);
+	DELETE(_full_screen_button);
+	DELETE(_vol_slider);
+	DELETE(_play_process_slider);
+	DELETE(_add_video_action);
+	DELETE(_add_dir_action);
+	DELETE(_remove_cur_action);
+	DELETE(_remove_all_action);
+	DELETE(_current_time_label);
+	DELETE(_total_time_label);
 }
 void xyjVideoPlayer::paintEvent(QPaintEvent* event){
 	QPainter p(this);
@@ -50,7 +77,7 @@ void xyjVideoPlayer::dropEvent(QDropEvent *event){
 //	}
 //}
 void xyjVideoPlayer::init_ui(){
-	
+	//this->showMaximized();
 	this->_add_video_button=new xyjButton(this);
 	QIcon normal_add,focus_add;
 	normal_add.addFile(QStringLiteral(":/xyjVideoPlayer/Resources/search_hover.png"), QSize(), QIcon::Normal, QIcon::Off);

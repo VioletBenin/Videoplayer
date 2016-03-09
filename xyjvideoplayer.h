@@ -28,7 +28,9 @@
 #include"NoFocusDelegate.h"
 #include"xyjSlider.h"
 
-
+#ifndef DELETE
+#define DELETE(ptr) if(ptr){delete ptr;ptr=NULL;}
+#endif
 enum PLAYMODE{LISTCIRCLE,SINGLEREPEAT,RANDOM};
 class xyjVideoPlayer : public QWidget
 {
@@ -44,6 +46,7 @@ public:
 	void init_table_menu();
 private:
 	//QHBoxLayout* _hblayout;
+	QLayout* _layout;
 	QMediaPlayer *_mediaPlayer;
 	int _cur_volume;
 	int _play_mode;
@@ -74,11 +77,12 @@ private:
 	xyjSlider *_play_process_slider;
 	/*********************************/
 	QMenu *_menu_on_table_text;
+	QMenu *_menu_on_table_blank;
 	QAction *_add_video_action;
 	QAction *_add_dir_action;
 	QAction *_remove_cur_action;
 	QAction *_remove_all_action;
-	QMenu *_menu_on_table_blank;
+	
 	/*********************************/
 	QLabel* _current_time_label;
 	QLabel* _total_time_label;
