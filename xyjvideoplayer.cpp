@@ -12,7 +12,7 @@ xyjVideoPlayer::xyjVideoPlayer(QWidget *parent)
 	setAttribute(Qt::WA_TranslucentBackground,true);
 	QWidgetResizeHandler *movein=new QWidgetResizeHandler(this);
 	movein->setMovingEnabled(true);
-	//this->setFixedSize(QSize(800,400));
+	this->setFixedSize(QSize(800,400));
 	this->raise_button();
 
 	this->_xyjPath=QApplication::applicationDirPath();
