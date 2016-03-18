@@ -8,7 +8,6 @@ xyjVideoPlayer::xyjVideoPlayer(QWidget *parent)
 	this->init_connections();
 	this->init_table_menu();
 	setWindowFlags(Qt::Window |Qt::FramelessWindowHint);
-	//setWindowOpacity(0.9);
 	setAttribute(Qt::WA_TranslucentBackground,true);
 	QWidgetResizeHandler *movein=new QWidgetResizeHandler(this);
 	movein->setMovingEnabled(true);
@@ -293,11 +292,7 @@ void xyjVideoPlayer::init_ui(){
 	
 	this->_playTable->setStyleSheet("QTableWidget::item:selected { background-color: rgb(150, 150, 150) }"
 									"QTableWidget { background-color: rgb(100, 100, 100) }"
-									"QScrollBar{background:transparent; width: 0px;}"
-									/*"QScrollBar::sub-line{background:transparent;}"
-									"QScrollBar::add-line{background:transparent;}"
-									"QScrollBar::handle{background:black; border:2px solid transparent; border-radius:5px;}"
-									"QScrollBar::handle:hover{background:red;}"*/);
+									"QScrollBar{background:transparent; width: 0px;}");
 	this->_playTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	this->_playTable->setAcceptDrops(true);
