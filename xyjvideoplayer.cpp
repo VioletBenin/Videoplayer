@@ -8,6 +8,7 @@ xyjVideoPlayer::xyjVideoPlayer(QWidget *parent)
 	this->init_connections();
 	this->init_table_menu();
 	setWindowFlags(Qt::Window |Qt::FramelessWindowHint);
+	//setWindowOpacity(0.9);
 	setAttribute(Qt::WA_TranslucentBackground,true);
 	QWidgetResizeHandler *movein=new QWidgetResizeHandler(this);
 	movein->setMovingEnabled(true);
@@ -288,11 +289,15 @@ void xyjVideoPlayer::init_ui(){
 	this->_playTable->setFrameShape(QFrame::NoFrame);
 	//设置不显示单元格分界线
 	this->_playTable->setShowGrid(false);
-	//this->_playTable->setMouseTracking(true);
+	this->_playTable->setMouseTracking(true);
 	
 	this->_playTable->setStyleSheet("QTableWidget::item:selected { background-color: rgb(150, 150, 150) }"
 									"QTableWidget { background-color: rgb(100, 100, 100) }"
-									"QScrollBar{background:transparent; width: 0px;}");
+									"QScrollBar{background:transparent; width: 0px;}"
+									/*"QScrollBar::sub-line{background:transparent;}"
+									"QScrollBar::add-line{background:transparent;}"
+									"QScrollBar::handle{background:black; border:2px solid transparent; border-radius:5px;}"
+									"QScrollBar::handle:hover{background:red;}"*/);
 	this->_playTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	this->_playTable->setAcceptDrops(true);
@@ -372,7 +377,7 @@ void xyjVideoPlayer::init_connections(){
 	connect(_play_table_button,SIGNAL(clicked()),this,SLOT(play_table_button_clicked()));
 
 	connect(_playTable,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(play_table_double_clicked(int,int)));
-	//connect(_playTable,SIGNAL(cellEntered(int ,int)),this,SLOT(mouse_enter_cell(int, int)));
+	connect(_playTable,SIGNAL(cellEntered(int ,int)),this,SLOT(mouse_enter_cell(int, int)));
 	connect(_playTable,SIGNAL(customContextMenuRequested(const QPoint&)),this,SLOT(play_table_menu_requested(const QPoint&)));
 	
 	connect(_repeat_button,SIGNAL(clicked()),this,SLOT(play_mode_button_clicked()));
@@ -622,20 +627,22 @@ void xyjVideoPlayer::fullscreen_button_clicked(){
 }
 
 void xyjVideoPlayer::mouse_enter_cell(int row,int col){
+	//qDebug()<<row<<" "<<col;
 	int rows=this->_playTable->rowCount();
 	int cols=this->_playTable->columnCount();
+	//qDebug()<<rows<<" "<<cols;
 	for(int i=0;i<rows;i++){
 		if(i==row){
 			for(int j=0;j<cols;j++){
-				this->_playTable->itemAt(i,j)->setBackgroundColor(QColor(255,255,0));
+				this->_playTable->item(i,j)->setBackgroundColor(QColor(0,150,150));
 			}
 		}else{
 			for(int j=0;j<cols;j++){
 				if(i%2==0){
-					this->_playTable->item(i,j)->setBackgroundColor(QColor(250,250,250));
+					this->_playTable->item(i,j)->setBackgroundColor(QColor(120,120,120));
 				}
 				else{
-					this->_playTable->item(i,j)->setBackgroundColor(QColor(200,200,200));
+					this->_playTable->item(i,j)->setBackgroundColor(QColor(100,100,100));
 				}
 			}
 		}
